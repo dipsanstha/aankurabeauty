@@ -248,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const deleteConfirmationOverlay = document.getElementById('deleteConfirmationOverlay');
     const cancelDeleteBtn = document.getElementById('cancelDelete');
     const confirmDeleteBtn = document.getElementById('confirmDelete');
+    const galleryUploadSection = document.getElementById('galleryUploadSection');
 
     const toastNotification = document.getElementById('toastNotification');
     const toastText = document.getElementById('toastText');
@@ -262,6 +263,8 @@ document.addEventListener('DOMContentLoaded', function () {
     ];
     let loginError = document.getElementById('loginError');
     let imageToDelete = null;
+    let selectedImages = []; // Array to store selected images for upload
+    let isAdminLoggedIn = false; // Flag to track admin login status
 
     // Toast notification functions
     function showToast(message, duration = 4000) {
@@ -289,6 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.removeItem('galleryAdminAuth');
         localStorage.removeItem('currentAdmin'); // Clear current admin info
         hideAdminControls();
+        hideGalleryUploadSection(); // Hide upload section when logging out
         loadGallery(); // Reload gallery without delete buttons
         toggleAdminPanel(false); // Close the admin panel
         
@@ -326,6 +330,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (savedAuth === 'true') {
             isAdminLoggedIn = true;
             showAdminControls();
+            showGalleryUploadSection();
         }
     }
 
@@ -345,6 +350,15 @@ document.addEventListener('DOMContentLoaded', function () {
     function hideAdminControls() {
         if (adminControls) adminControls.style.display = 'none';
         if (adminLoginForm) adminLoginForm.style.display = 'block';
+    }
+
+    // Show/hide gallery upload section
+    function showGalleryUploadSection() {
+        if (galleryUploadSection) galleryUploadSection.style.display = 'block';
+    }
+
+    function hideGalleryUploadSection() {
+        if (galleryUploadSection) galleryUploadSection.style.display = 'none';
     }
 
     // Toggle admin panel
@@ -397,6 +411,7 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('galleryAdminAuth', 'true');
             localStorage.setItem('currentAdmin', username); // Store current admin for reference
             showAdminControls();
+            showGalleryUploadSection(); // Show upload section for logged-in admin
             loadGallery();
             loginError.textContent = ''; // Clear any previous errors
         } else {
@@ -406,7 +421,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle image upload
     function handleImageUpload(files) {
-        selectedImages = [];
         imagePreview.innerHTML = '';
 
         Array.from(files).forEach((file, index) => {
@@ -446,7 +460,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Save images to gallery
     function saveImages() {
+       let s=0;
         if (selectedImages.length === 0) return;
+        else {
+            console.log(selectedImages);
+        }
 
         // In a real app, you would upload to a server here
         const gallery = JSON.parse(localStorage.getItem('galleryImages') || '[]');
@@ -457,6 +475,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 src: img.src,
                 timestamp: new Date().toISOString()
             });
+            s=s+1;
         });
 
         // Keep only the latest 50 images
@@ -470,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function () {
         resetUploadArea();
 
         // Show success message
-        showToast(`${selectedImages.length} image(s) added to gallery!`);
+        showToast(`${s} image added to gallery!`);
     }
 
     // Load gallery images
@@ -532,8 +551,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Event Listeners
-    if (openAdminPanel) {
-        openAdminPanel.addEventListener('click', () => toggleAdminPanel(true));
+    const logoImage = document.getElementById('logoImage');
+    if (logoImage) {
+        logoImage.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default navigation
+            toggleAdminPanel(true);
+        });
     }
 
     if (closeAdminPanel) {
@@ -641,8 +664,18 @@ document.addEventListener('DOMContentLoaded', function () {
         adminLogoutBtn.addEventListener('click', logoutAdmin);
     }
 
+    // Update gallery upload section visibility based on login status
+    function updateGalleryUploadVisibility() {
+        if (isAdminLoggedIn) {
+            showGalleryUploadSection();
+        } else {
+            hideGalleryUploadSection();
+        }
+    }
+
     // Initialize
     checkAuth();
+    updateGalleryUploadVisibility(); // Set initial visibility based on login status
     loadGallery();
 
     // Initialize Feather Icons

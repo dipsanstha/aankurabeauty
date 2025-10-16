@@ -250,6 +250,8 @@ p, span, div,
     width: 48px;
     height: 48px;
     object-fit: contain;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .footer-logo {
@@ -1075,10 +1077,34 @@ p, span, div,
     color: var(--color-primary);
 }
 
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.5rem;
+.gallery-upload-section {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius-medium);
+    padding: 2rem;
+    box-shadow: 0 24px 45px rgba(217, 74, 124, 0.12);
+    border: 1px solid rgba(217, 74, 124, 0.12);
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.gallery-upload-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .gallery-upload-section {
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .gallery-upload-section h3 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
 }
 
 .gallery-grid figure {
@@ -1785,7 +1811,7 @@ p, span, div,
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    z-index: 2500;
     padding: 1rem;
 }
 
