@@ -1211,27 +1211,131 @@ a {
     }
 }
 
+/* Enhanced mobile responsiveness for menu containers */
+@media (max-width: 768px) {
+    .menu-grid {
+        gap: 1.5rem;
+        padding: 0 0.5rem;
+    }
+
+    .menu-column {
+        padding: 1.5rem 1.5rem;
+        border-radius: var(--radius-small);
+    }
+
+    .menu-column h3,
+    .menu-subsection h4 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .menu-item {
+        padding: 0.75rem 0;
+        font-size: 0.9rem;
+    }
+
+    .menu-name {
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+
+    .menu-price {
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .menu-note {
+        margin-top: 2rem;
+        padding: 1rem 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    .menu-note i {
+        width: 18px;
+        height: 18px;
+    }
+}
+
 @media (max-width: 480px) {
-    .container {
-        padding: 0 1.25rem;
+    .menu-grid {
+        gap: 1rem;
+        padding: 0;
+        margin: 0 -0.5rem;
     }
 
-    .btn {
-        width: 100%;
+    .menu-column {
+        padding: 1.25rem 1rem;
+        margin: 0 0.5rem;
+        border-radius: var(--radius-small);
     }
 
-    .hero-badges span {
-        width: 100%;
+    .menu-column h3,
+    .menu-subsection h4 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
         text-align: center;
     }
 
     .menu-item {
-        flex-direction: column;
-        align-items: flex-start;
+        padding: 0.6rem 0;
+        font-size: 0.85rem;
+        gap: 0.5rem;
+    }
+
+    .menu-name {
+        font-size: 0.85rem;
+        line-height: 1.3;
     }
 
     .menu-price {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .menu-note {
+        margin-top: 1.5rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+        text-align: center;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .menu-note i {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 360px) {
+    .menu-column {
+        padding: 1rem 0.75rem;
+        margin: 0 0.25rem;
+    }
+
+    .menu-column h3,
+    .menu-subsection h4 {
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .menu-item {
+        padding: 0.5rem 0;
+        font-size: 0.8rem;
+    }
+
+    .menu-name {
+        font-size: 0.8rem;
+        line-height: 1.2;
+    }
+
+    .menu-price {
+        font-size: 0.75rem;
+    }
+
+    .menu-note {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
     }
 }
 
