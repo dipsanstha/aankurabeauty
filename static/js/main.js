@@ -262,11 +262,98 @@ document.addEventListener('DOMContentLoaded', function () {
         // { username: 'editor', password: 'editor789' }
     ];
     let loginError = document.getElementById('loginError');
-    let imageToDelete = null;
+    // Gallery selection and bulk operations
+    let selectedImageIds = new Set();
     let selectedImages = []; // Array to store selected images for upload
+    let imageToDelete = null;
     let isAdminLoggedIn = false; // Flag to track admin login status
 
-    // Toast notification functions
+    // Handle image selection
+    function handleImageSelection(imageId, isSelected) {
+        if (isSelected) {
+            selectedImageIds.add(imageId);
+        } else {
+            selectedImageIds.delete(imageId);
+        }
+        updateSelectionUI();
+    }
+
+    // Select all images
+    function selectAllImages() {
+        const gallery = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+        if (selectedImageIds.size === gallery.length) {
+            // Deselect all
+            selectedImageIds.clear();
+        } else {
+            // Select all
+            selectedImageIds.clear();
+            gallery.forEach(img => selectedImageIds.add(img.id));
+        }
+        updateSelectionUI();
+        updateGallerySelection();
+    }
+
+    // Update selection UI
+    function updateSelectionUI() {
+        const selectedCount = document.querySelector('.selected-count');
+        const bulkActions = document.querySelector('.bulk-actions');
+        const bulkDeleteBtn = document.querySelector('.bulk-delete-btn');
+        const bulkSelectAll = document.querySelector('.bulk-select-all');
+
+        if (selectedCount) {
+            selectedCount.textContent = `${selectedImageIds.size} selected`;
+        }
+
+        if (bulkActions) {
+            bulkActions.style.display = selectedImageIds.size > 0 ? 'flex' : 'none';
+        }
+
+        if (bulkDeleteBtn) {
+            bulkDeleteBtn.style.display = selectedImageIds.size > 0 ? 'block' : 'none';
+        }
+
+        if (bulkSelectAll) {
+            const gallery = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+            bulkSelectAll.textContent = selectedImageIds.size === gallery.length ? 'Deselect All' : 'Select All';
+        }
+    }
+
+    // Update gallery item selection state
+    function updateGallerySelection() {
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            const checkbox = item.querySelector('.gallery-select');
+            const imageId = parseInt(item.querySelector('img')?.getAttribute('data-id'));
+
+            if (checkbox && imageId !== undefined) {
+                const isSelected = selectedImageIds.has(imageId);
+                item.classList.toggle('selected', isSelected);
+                checkbox.checked = isSelected;
+            }
+        });
+    }
+
+    // Bulk delete selected images
+    function bulkDeleteImages() {
+        if (selectedImageIds.size === 0) return;
+
+        // Use the unified delete confirmation modal
+        imageToDelete = null; // Clear individual image ID for bulk operation
+        updateDeleteConfirmationModal();
+        showDeleteConfirmation(null);
+    }
+
+    // Perform the actual bulk deletion
+    function performBulkDeletion() {
+        const deletedCount = selectedImageIds.size;
+        const gallery = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+        const updatedGallery = gallery.filter(img => !selectedImageIds.has(img.id));
+        localStorage.setItem('galleryImages', JSON.stringify(updatedGallery));
+
+        selectedImageIds.clear();
+        loadGallery();
+        updateSelectionUI();
+        showToast(`${deletedCount} image${deletedCount > 1 ? 's' : ''} deleted successfully!`);
+    }
     function showToast(message, duration = 4000) {
         if (toastNotification && toastText) {
             toastText.textContent = message;
@@ -295,23 +382,51 @@ document.addEventListener('DOMContentLoaded', function () {
         hideGalleryUploadSection(); // Hide upload section when logging out
         loadGallery(); // Reload gallery without delete buttons
         toggleAdminPanel(false); // Close the admin panel
-        
+
+        // Clear selection state
+        selectedImageIds.clear();
+
         // Reset login form fields
         const usernameField = document.getElementById('adminUsername');
         const passwordField = document.getElementById('adminPassword');
         if (usernameField) usernameField.value = '';
         if (passwordField) passwordField.value = '';
         if (loginError) loginError.textContent = '';
-        
+
         console.log('Admin logged out successfully');
     }
 
     // Show delete confirmation modal
     function showDeleteConfirmation(imageId) {
         imageToDelete = imageId;
+        updateDeleteConfirmationModal();
         if (deleteConfirmationOverlay) {
             deleteConfirmationOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
+        }
+    }
+
+    // Update delete confirmation modal content
+    function updateDeleteConfirmationModal() {
+        const confirmationMessage = document.querySelector('.delete-confirmation-body p');
+        const deleteTitle = document.querySelector('.delete-confirmation-header h3');
+
+        if (imageToDelete !== null) {
+            // Individual image deletion
+            if (confirmationMessage) {
+                confirmationMessage.textContent = 'Are you sure you want to delete this image? This action cannot be undone.';
+            }
+            if (deleteTitle) {
+                deleteTitle.textContent = 'Delete Image?';
+            }
+        } else if (selectedImageIds.size > 0) {
+            // Bulk deletion
+            if (confirmationMessage) {
+                confirmationMessage.textContent = `Are you sure you want to delete ${selectedImageIds.size} selected image${selectedImageIds.size > 1 ? 's' : ''}? This action cannot be undone.`;
+            }
+            if (deleteTitle) {
+                deleteTitle.textContent = `Delete ${selectedImageIds.size} Image${selectedImageIds.size > 1 ? 's' : ''}?`;
+            }
         }
     }
 
@@ -334,10 +449,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    const galleryControls = document.getElementById('galleryControls');
+
     // Show/hide admin controls
     function showAdminControls() {
         if (adminControls) adminControls.style.display = 'block';
         if (adminLoginForm) adminLoginForm.style.display = 'none';
+        if (galleryControls) galleryControls.style.display = 'flex';
         
         // Display current admin in dashboard
         const currentAdmin = localStorage.getItem('currentAdmin');
@@ -350,6 +468,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function hideAdminControls() {
         if (adminControls) adminControls.style.display = 'none';
         if (adminLoginForm) adminLoginForm.style.display = 'block';
+        if (galleryControls) galleryControls.style.display = 'none';
     }
 
     // Show/hide gallery upload section
@@ -412,7 +531,8 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('currentAdmin', username); // Store current admin for reference
             showAdminControls();
             showGalleryUploadSection(); // Show upload section for logged-in admin
-            loadGallery();
+            loadGallery(); // Load gallery with admin controls
+            updateSelectionUI(); // Initialize selection UI
             loginError.textContent = ''; // Clear any previous errors
         } else {
             loginError.textContent = 'Invalid username or password';
@@ -505,10 +625,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
         galleryGrid.innerHTML = gallery.map(img => `
             <div class="gallery-item">
-                <img src="${img.src}" alt="Gallery image">
+                <img src="${img.src}" alt="Gallery image" data-id="${img.id}">
+                ${isAdminLoggedIn ? `<input type="checkbox" class="gallery-select" data-id="${img.id}">` : ''}
                 ${isAdminLoggedIn ? `<button class="remove-gallery-image" data-id="${img.id}">&times;</button>` : ''}
             </div>
         `).join('');
+
+        // Add event listeners for selection checkboxes
+        document.querySelectorAll('.gallery-select').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                const imageId = parseInt(e.target.dataset.id);
+                handleImageSelection(imageId, e.target.checked);
+            });
+        });
 
         // Add event listeners for remove buttons
         document.querySelectorAll('.remove-gallery-image').forEach(btn => {
@@ -529,7 +658,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const gallery = JSON.parse(localStorage.getItem('galleryImages') || '[]');
         const updatedGallery = gallery.filter(img => img.id !== id);
         localStorage.setItem('galleryImages', JSON.stringify(updatedGallery));
+
+        // Remove from selection if it was selected
+        selectedImageIds.delete(id);
+
         loadGallery();
+        updateSelectionUI();
+        showToast('Image deleted successfully!');
     }
 
     // Update save button state
@@ -581,7 +716,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (confirmDeleteBtn) {
         confirmDeleteBtn.addEventListener('click', () => {
             if (imageToDelete !== null) {
+                // Individual image deletion
                 removeImageFromGallery(imageToDelete);
+                hideDeleteConfirmation();
+            } else if (selectedImageIds.size > 0) {
+                // Bulk deletion
+                performBulkDeletion();
                 hideDeleteConfirmation();
             }
         });
@@ -664,6 +804,18 @@ document.addEventListener('DOMContentLoaded', function () {
         adminLogoutBtn.addEventListener('click', logoutAdmin);
     }
 
+    // Bulk action buttons
+    const bulkSelectAllBtn = document.querySelector('.bulk-select-all');
+    const bulkDeleteBtn = document.querySelector('.bulk-delete-btn');
+
+    if (bulkSelectAllBtn) {
+        bulkSelectAllBtn.addEventListener('click', selectAllImages);
+    }
+
+    if (bulkDeleteBtn) {
+        bulkDeleteBtn.addEventListener('click', bulkDeleteImages);
+    }
+
     // Update gallery upload section visibility based on login status
     function updateGalleryUploadVisibility() {
         if (isAdminLoggedIn) {
@@ -677,6 +829,12 @@ document.addEventListener('DOMContentLoaded', function () {
     checkAuth();
     updateGalleryUploadVisibility(); // Set initial visibility based on login status
     loadGallery();
+
+    // Initialize selection UI if admin is logged in
+    if (isAdminLoggedIn) {
+        updateSelectionUI();
+        if (galleryControls) galleryControls.style.display = 'flex';
+    }
 
     // Initialize Feather Icons
     if (window.feather) {

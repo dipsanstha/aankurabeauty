@@ -246,16 +246,18 @@
                 <p>Explore our latest transformations and beauty work</p>
             </div>
 
+                 
             <!-- Gallery Upload Section (Admin Only) -->
-            <div class="gallery-upload-section" id="galleryUploadSection" style="display: none;">
+     <div class="gallery-upload-section" id="galleryUploadSection" style="display: none;">
                 <h3>Add Images to Gallery</h3>
                 <div class="upload-area" id="uploadArea">
                     <input type="file" id="imageUpload" accept="image/*" multiple style="display: none;">
                     <div class="upload-prompt">
                         <i data-feather="upload-cloud"></i>
                         <p>Drag & drop images here or click to select</p>
-                    </div>
-                    <div id="imagePreview" class="image-preview"></div>
+
+            </div>
+                <div id="imagePreview" class="image-preview"></div>
                 </div>
                 <div class="form-actions">
                     <button id="saveImages" class="btn btn-primary" disabled>Save Images</button>
@@ -264,11 +266,24 @@
             </div>
 
             <!-- Gallery Grid -->
-            <div class="gallery-grid" id="galleryGrid">
+            <div class="gallery-grid" id="galleryGrid" style="padding-bottom: 2rem;">
                 <!-- Images will be loaded here -->
             </div>
+
+            <!-- Gallery Controls (Admin Only) -->
+            <div class="gallery-controls" id="galleryControls" style="display: none; background: transparent;">
+                <div class="bulk-actions">
+                    <span class="selected-count">0 selected</span>
+                    <button class="bulk-select-all btn btn-primary">Select All</button>
+                    <button class="bulk-delete-btn btn btn-danger" style="display: none;">Delete Selected</button>
+                </div>
+
+           
+
         </div>
     </section>
+
+
 
     <section class="section section-split" id="about">
         <div class="container split-layout">
