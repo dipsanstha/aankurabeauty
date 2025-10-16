@@ -19,7 +19,46 @@
     scroll-behavior: smooth;
 }
 
-*, *::before, *::after {
+/* Enhanced grid container overflow protection */
+.service-grid,
+.menu-grid,
+.gallery-grid,
+.testimonial-grid,
+.reviews-layout {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Enhanced mobile responsiveness for all grid containers */
+@media (max-width: 768px) {
+    .service-grid,
+    .gallery-grid,
+    .testimonial-grid {
+        gap: 1.5rem;
+    }
+
+    .reviews-layout {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .service-grid,
+    .gallery-grid,
+    .testimonial-grid {
+        gap: 1rem;
+    }
+
+    .reviews-layout {
+        gap: 1rem;
+    }
+}
+
+/* Ensure proper box-sizing for all containers */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
 }
 
@@ -54,6 +93,53 @@ a {
     max-width: 1180px;
     margin: 0 auto;
     padding: 0 1.75rem;
+    box-sizing: border-box;
+}
+
+/* Enhanced mobile container responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 0.75rem;
+    }
+}
+
+/* Enhanced overflow protection for all elements */
+h1, h2, h3, h4, h5, h6,
+p, span, div,
+.menu-name, .menu-price,
+.service-card h3, .service-card p, .service-card li {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Ensure buttons don't overflow on mobile */
+.btn {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 480px) {
+    .btn {
+        white-space: normal;
+        word-wrap: break-word;
+        padding: 0.75rem 1.5rem;
+    }
+}
+
+/* Fix any remaining overflow issues with long text */
+.info-card ul li,
+.hours ul li,
+.footer-links a {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .site-body {
@@ -539,6 +625,8 @@ a {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1.75rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .service-card {
@@ -599,6 +687,25 @@ a {
     gap: 2.4rem;
     max-width: 1100px;
     margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .menu-grid {
+        gap: 1.5rem;
+        padding: 0 0.5rem;
+        max-width: none;
+        margin: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .menu-grid {
+        gap: 1rem;
+        padding: 0;
+        margin: 0 -0.5rem;
+    }
 }
 
 .menu-column {
