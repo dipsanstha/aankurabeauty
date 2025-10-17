@@ -270,8 +270,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Admin credentials - Now supports multiple admin accounts
     const ADMIN_CREDENTIALS = [
-        { username: 'admin', password: '' },
-        { username: 'manager', password: '' },
+        { username: 'admin', password: ' ' },
+        { username: 'manager', password: ' ' },
         // Add more admin accounts here as needed
         // { username: 'editor', password: 'editor789' }
     ];
