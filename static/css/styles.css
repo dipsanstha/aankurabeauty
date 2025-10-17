@@ -1235,6 +1235,11 @@ a{
     white-space: nowrap;
 }
 
+menu h4{
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
 .menu-note {
     margin-top: 2.5rem;
     display: flex;
