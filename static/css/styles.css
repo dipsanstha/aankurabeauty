@@ -1235,7 +1235,7 @@ a{
     white-space: nowrap;
 }
 
-menu h4{
+.menu-subsection h4{
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
