@@ -910,16 +910,14 @@ p, span, div,
 }
 
 .section-heading p {
-    color: var(--color-text-muted);
+color: var(--color-text-muted);
+}
+.service-grid{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
 }
 
-.service-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.75rem;
-    width: 100%;
-    box-sizing: border-box;
-}
     
 .service-card {
     background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 240, 246, 0.9));
@@ -976,13 +974,11 @@ p, span, div,
 }
 
 .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2.4rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    width: 100%;
-    box-sizing: border-box;
+display: flex;
+flex-direction: column;
+gap: 2rem;
+width: 100%;
+box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
@@ -1800,14 +1796,44 @@ a{
     }
 
     .menu-column {
-        padding: 1.5rem 1.5rem;
-        border-radius: var(--radius-small);
+        padding: 1.25rem 1.5rem;
     }
 
-    .menu-column h3,
-    .menu-subsection h4 {
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
+    .menu-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1rem 0;
+    }
+
+    .menu-name {
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    .menu-column {
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 240, 246, 0.9));
+        border-radius: var(--radius-medium);
+        padding: 1.75rem;
+        box-shadow: 0 24px 45px rgba(217, 74, 124, 0.12);
+        border: 1px solid rgba(217, 74, 124, 0.12);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        margin-bottom: 1.5rem;
+    }
+
+    .menu-column:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 32px 60px rgba(217, 74, 124, 0.2);
+    }
+
+    .menu-item {
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 0.85rem;
+        padding: 0.75rem 0;
+        gap: 0.5rem;
     }
 
     .menu-item {
@@ -1885,38 +1911,6 @@ a{
     .menu-note i {
         width: 16px;
         height: 16px;
-    }
-}
-
-@media (max-width: 360px) {
-    .menu-column {
-        padding: 1rem 0.75rem;
-        margin: 0 0.25rem;
-    }
-
-    .menu-column h3,
-    .menu-subsection h4 {
-        font-size: 0.95rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .menu-item {
-        padding: 0.5rem 0;
-        font-size: 0.8rem;
-    }
-
-    .menu-name {
-        font-size: 0.8rem;
-        line-height: 1.2;
-    }
-
-    .menu-price {
-        font-size: 0.75rem;
-    }
-
-    .menu-note {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.8rem;
     }
 }
 
