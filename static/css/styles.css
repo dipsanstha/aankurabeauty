@@ -238,25 +238,70 @@ img {
     }
 
     .menu-column {
-        padding: 1.25rem 1.5rem;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1rem;
     }
 
     .menu-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-        padding: 1rem 0;
+        font-size: 0.85rem;
+        padding: 0.75rem 0;
+        gap: 0.4rem;
     }
 
     .menu-name {
-        font-size: 0.9rem;
-        font-weight: 700;
+        font-size: 0.85rem;
+        line-height: 1.3;
     }
 
     .menu-price {
-        font-size: 0.85rem;
-        margin-top: 0.25rem;
+        font-size: 0.8rem;
+        font-weight: 600;
     }
+
+@media (max-width: 360px) {
+    .container {
+        padding: 0 0.5rem;
+    }
+
+    .section {
+        padding: 1.5rem 0;
+    }
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .service-card,
+    .menu-column,
+    .review-card {
+        padding: 1rem;
+    }
+
+    .menu-column {
+        padding: 0.75rem 1rem;
+    }
+
+    .menu-item {
+        font-size: 0.8rem;
+        padding: 0.5rem 0;
+    }
+
+    .menu-name {
+        font-size: 0.8rem;
+    }
+
+    .menu-price {
+        font-size: 0.75rem;
+    }
+
+    .hero-copy h1 {
+        font-size: 2rem;
+    }
+
+    .section-heading h2 {
+        font-size: 1.8rem;
+    }
+}
 }
 
 /* Enhanced overflow protection for all elements */
@@ -1720,6 +1765,21 @@ a{
     .hero-highlight {
         position: static;
         margin-top: 1.5rem;
+    }
+
+    .menu-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+        padding: 0.75rem 0;
+        gap: 0.5rem;
+    }
+
+    .menu-column {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
     }
 
     .cta-layout {
