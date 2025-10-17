@@ -167,7 +167,11 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        reviewsList.innerHTML = reviews.map(function (review) {
+        const maxInitialReviews = 5;
+        const hasMore = reviews.length > maxInitialReviews;
+        const displayedReviews = hasMore ? reviews.slice(0, maxInitialReviews) : reviews;
+
+        reviewsList.innerHTML = displayedReviews.map(function (review) {
             const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
             const location = review.location ? `<span class="review-location">${review.location}</span>` : '';
             return `
@@ -181,9 +185,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     <time datetime="${review.created}">${new Date(review.created).toLocaleDateString()}</time>
                 </article>
             `;
-        }).join('');
+        }).join('') + (hasMore ? `
+            <button class="show-more-btn" id="showMoreReviews">Show More (${reviews.length - maxInitialReviews} more)</button>
+        ` : '');
 
         updateAverageRating(reviews, { immediate: true });
+
+        // Add event listener for Show More button
+        const showMoreBtn = document.getElementById('showMoreReviews');
+        if (showMoreBtn) {
+            showMoreBtn.addEventListener('click', function() {
+                renderReviews(reviews); // Re-render with all reviews
+            });
+        }
     };
 
     const defaults = DEFAULT_REVIEWS.map(function (review) {
