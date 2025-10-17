@@ -745,9 +745,9 @@ p, span, div,
 
 .hero-copy h1 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2.5rem, 4.5vw, 3.6rem);
     line-height: 1.15;
     margin-bottom: 1.5rem;
+    font-weight: bolder;
 }
 
 .hero-copy p {
