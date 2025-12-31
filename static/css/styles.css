@@ -705,6 +705,108 @@ p, span, div,
     box-shadow: 0 12px 25px rgba(247, 119, 124, 0.3);
 }
 
+.nav.hidden {
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+}
+
+.location-update-banner {
+    background: linear-gradient(135deg, var(--color-secondary) 0%, rgba(217, 74, 124, 0.1) 100%);
+    text-align: center;
+    font-weight: 600;
+    color: var(--color-text);
+    border-bottom: 2px solid var(--color-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.location-update-banner::before {
+    content: '';
+    position: relative;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+.ad-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none;
+}
+
+.ad-content {
+    position: relative;
+    max-width: 66%;
+    max-height: 70%;
+}
+
+.ad-content video {
+    width: 100%;
+    height: auto;
+    max-width: 800px;
+}
+
+.close-ad {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background:transparent ;
+    color: rgb(13, 12, 12);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.close-ad:hover {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 1024px) {
+    .ad-content {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .ad-content video {
+        width: 100vw;
+        height: 80vh;
+        object-fit: contain;
+    }
+
+    .close-ad{
+        transform: translateX(-185px);
+    }
+
+}
+
+
 .hero {
     padding: clamp(4rem, 12vw, 8rem) 0 5rem;
     position: relative;

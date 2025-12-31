@@ -79,6 +79,45 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Hide/show header on scroll
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', function() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const nav = document.querySelector('.nav');
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Scrolling down and past 100px
+            nav.classList.add('hidden');
+        } else {
+            // Scrolling up
+            nav.classList.remove('hidden');
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+
+    // Video Ad
+    const adOverlay = document.getElementById('adOverlay');
+    const closeAd = document.getElementById('closeAd');
+    const adVideo = document.getElementById('adVideo');
+
+    // Show ad on load
+    window.addEventListener('load', function() {
+        adOverlay.style.display = 'flex';
+    });
+
+    // Close ad on button click
+    closeAd.addEventListener('click', function() {
+        adOverlay.style.display = 'none';
+        adVideo.pause();
+    });
+
+    // Close ad on overlay click
+    adOverlay.addEventListener('click', function(e) {
+        if (e.target === adOverlay) {
+            adOverlay.style.display = 'none';
+            adVideo.pause();
+        }
+    });
+
     const startCountUp = function (entry) {
         const el = entry.target;
         const countTo = parseFloat(el.dataset.count);
